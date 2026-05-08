@@ -1,0 +1,14 @@
+# Python 相关
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# VS Code 配置
+.vscode/
+
+# 数据库、敏感文件（如果有）
+*.env
+*.db
+*.sqlite
