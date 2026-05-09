@@ -390,6 +390,8 @@ class App(tk.Tk):
 
     def clear_pages(self):
         """清除所有页面（用于登出）"""
+        if self.current_page:
+            self.current_page.pack_forget()
         self.pages.clear()
         self.current_page = None
 
@@ -909,6 +911,7 @@ class DeliveryHomePage(tk.Frame):
             ("📋 浏览订单", self.browse_orders, "#4A90D9"),
             ("🚚 我的配送", self.my_deliveries, "#27AE60"),
             ("💰 我的收入", self.my_income, "#E67E22"),
+            ("🚪 退出登录", self.logout, "#E74C3C"),
         ]
         for text, cmd, color in btns:
             btn = tk.Button(btn_frame, text=text, font=("微软雅黑", 11, "bold"),
@@ -979,6 +982,13 @@ class DeliveryHomePage(tk.Frame):
 
     def my_income(self):
         self.app.show_page("DeliveryIncomePage")
+
+    def logout(self):
+        global current_user
+        if messagebox.askyesno("确认", "确定要退出登录吗？"):
+            current_user = None
+            self.app.clear_pages()
+            self.app.show_page("LoginPage")
 
 
 class DeliveryBrowsePage(tk.Frame):
@@ -1340,6 +1350,12 @@ class AdminPage(tk.Frame):
                           command=lambda v=val: self.switch_tab(v))
             btn.pack(side="left", padx=2)
 
+        # 退出登录
+        tk.Button(tab_frame, text="退出登录", font=("微软雅黑", 10),
+                 bg="#E74C3C", fg="white", bd=0, padx=15, pady=4,
+                 activebackground="#C0392B",
+                 command=self.logout).pack(side="right", padx=2)
+
         self.switch_tab("orders")
 
     def switch_tab(self, tab):
@@ -1440,6 +1456,13 @@ class AdminPage(tk.Frame):
                     fg="#333", width=12).pack(side="left")
             tk.Label(row, text=u.get("student_id", ""), font=("微软雅黑", 9), bg="white",
                     fg="#333", width=10).pack(side="left")
+
+    def logout(self):
+        global current_user
+        if messagebox.askyesno("确认", "确定要退出登录吗？"):
+            current_user = None
+            self.app.clear_pages()
+            self.app.show_page("LoginPage")
 
 
 # ==================== 启动入口 ====================
