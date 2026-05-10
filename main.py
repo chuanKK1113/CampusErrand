@@ -466,7 +466,7 @@ class LoginPage(tk.Frame):
         self.entry_username = tk.Entry(card, font=("微软雅黑", 12), width=25,
                                        relief="solid", bd=1)
         self.entry_username.pack(pady=(2, 10))
-        self.entry_username.insert(0, "admin")  # 默认填充
+        # 默认不填充，让用户自行输入
 
         # 密码
         tk.Label(card, text="密码", font=("微软雅黑", 10),
@@ -474,7 +474,7 @@ class LoginPage(tk.Frame):
         self.entry_password = tk.Entry(card, font=("微软雅黑", 12), width=25,
                                        show="*", relief="solid", bd=1)
         self.entry_password.pack(pady=(2, 10))
-        self.entry_password.insert(0, "123456")
+        # 默认不填充，让用户自行输入
         self.entry_password.bind("<Return>", lambda e: self.login())
 
         # 登录按钮
