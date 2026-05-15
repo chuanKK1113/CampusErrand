@@ -21,10 +21,17 @@ Page({
 
     this.setData({
       userInfo,
-      roleText: userInfo.role === 'requester' ? '需求方' : userInfo.role === 'delivery' ? '配送员' : '管理员'
+      roleText: userInfo.role === 'requester' ? '需求方' : userInfo.role === 'delivery' ? '配送员' : '管理员',
+      avatarFullUrl: this.resolveAvatar(userInfo.avatar)
     })
 
     this.loadData()
+  },
+
+  resolveAvatar(avatar) {
+    if (!avatar) return ''
+    if (avatar.startsWith('http://') || avatar.startsWith('https://')) return avatar
+    return app.globalData.baseUrl + avatar
   },
 
   async loadData() {

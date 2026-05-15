@@ -29,3 +29,8 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 1440  # 24小时
 APP_TITLE = "校园跑腿系统 API"
 APP_DESCRIPTION = "校园跑腿系统后端 RESTful API"
 APP_VERSION = "1.0.0"
+
+# 文件上传配置
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+UPLOAD_DIR = os.path.join(BASE_DIR, "uploads", "avatars")
+MAX_UPLOAD_SIZE = 2 * 1024 * 1024  # 2MB

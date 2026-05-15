@@ -26,6 +26,7 @@ class UserResponse(BaseModel):
     name: str
     phone: str
     student_id: Optional[str] = ""
+    avatar: Optional[str] = ""
     rating: float = 0.0
     completed: int = 0
     balance: float = 0.0
@@ -73,6 +74,11 @@ class ReviewResponse(BaseModel):
     delivery_person: str
     rating: int
     comment: Optional[str] = ""
+
+
+class ProfileUpdate(BaseModel):
+    """更新个人资料"""
+    name: str = Field(min_length=1, max_length=50, description="用户昵称")
 
 
 # ==================== 通用响应 ====================

@@ -7,6 +7,14 @@
   background: linear-gradient(135deg, #4A90D9, #357ABD) !important;
 }
 
+.profile-avatar-img {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  margin-bottom: 20rpx;
+  overflow: hidden;
+}
+
 .profile-avatar {
   width: 140rpx;
   height: 140rpx;

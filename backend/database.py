@@ -69,6 +69,7 @@ def init_database():
                 name        TEXT NOT NULL,
                 phone       TEXT NOT NULL,
                 student_id  TEXT DEFAULT '',
+                avatar      TEXT DEFAULT '',
                 rating      REAL DEFAULT 0.0,
                 completed   INTEGER DEFAULT 0,
                 balance     REAL DEFAULT 0.0,
@@ -100,16 +101,25 @@ def init_database():
             );
         """)
 
+        # 兼容旧数据库：如果 avatar 列不存在则添加
+        try:
+            conn.execute("ALTER TABLE Users ADD COLUMN avatar TEXT DEFAULT ''")
+        except Exception:
+            pass  # 列已存在
+
         # 插入测试数据
         cursor = conn.cursor()
         if not cursor.execute("SELECT 1 FROM Users WHERE username='admin'").fetchone():
             now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            cursor.execute("INSERT INTO Users VALUES (?,?,?,?,?,?,?,?,?,?)",
-                           ("admin", "123456", "admin", "管理员", "13800138000", "ADMIN001", 0, 0, 0, now))
-            cursor.execute("INSERT INTO Users VALUES (?,?,?,?,?,?,?,?,?,?)",
-                           ("zhangsan", "123456", "requester", "张三", "13900139000", "2024001", 0, 0, 0, now))
-            cursor.execute("INSERT INTO Users VALUES (?,?,?,?,?,?,?,?,?,?)",
-                           ("lisi", "123456", "delivery", "李四", "13700137000", "2024002", 5.0, 0, 0, now))
+            cursor.execute(
+                "INSERT INTO Users (username, password, role, name, phone, student_id, avatar, rating, completed, balance, created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                ("admin", "123456", "admin", "管理员", "13800138000", "ADMIN001", "", 0, 0, 0, now))
+            cursor.execute(
+                "INSERT INTO Users (username, password, role, name, phone, student_id, avatar, rating, completed, balance, created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                ("zhangsan", "123456", "requester", "张三", "13900139000", "2024001", "", 0, 0, 0, now))
+            cursor.execute(
+                "INSERT INTO Users (username, password, role, name, phone, student_id, avatar, rating, completed, balance, created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                ("lisi", "123456", "delivery", "李四", "13700137000", "2024002", "", 5.0, 0, 0, now))
             cursor.execute(
                 "INSERT INTO Orders (id, requester, type, details, pickup, dropoff, reward, note, status, delivery_person, created_at) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
                 ("TEST001", "zhangsan", "快递代取", "帮我取一下快递，在菜鸟驿站3号货架",
@@ -163,7 +173,7 @@ class Database:
         with get_db() as conn:
             cur = conn.cursor()
             cur.execute(
-                "SELECT username, role, name, phone, student_id, rating, completed, balance, created_at FROM Users WHERE username = ?",
+                "SELECT username, role, name, phone, student_id, avatar, rating, completed, balance, created_at FROM Users WHERE username = ?",
                 (username,))
             return row_to_dict(cur, cur.fetchone())
 
@@ -171,8 +181,24 @@ class Database:
     def get_all_users():
         with get_db() as conn:
             cur = conn.cursor()
-            cur.execute("SELECT username, role, name, phone, student_id, rating, completed, balance, created_at FROM Users")
+            cur.execute("SELECT username, role, name, phone, student_id, avatar, rating, completed, balance, created_at FROM Users")
             return rows_to_list(cur, cur.fetchall())
+
+    @staticmethod
+    def update_profile(username, name):
+        """更新用户昵称"""
+        with get_db() as conn:
+            cur = conn.cursor()
+            cur.execute("UPDATE Users SET name = ? WHERE username = ?", (name, username))
+            return cur.rowcount > 0
+
+    @staticmethod
+    def update_avatar(username, avatar_path):
+        """更新用户头像路径"""
+        with get_db() as conn:
+            cur = conn.cursor()
+            cur.execute("UPDATE Users SET avatar = ? WHERE username = ?", (avatar_path, username))
+            return cur.rowcount > 0
 
     # ==================== 订单相关 ====================
 

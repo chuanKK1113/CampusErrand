@@ -9,7 +9,8 @@
     "pages/review/review",
     "pages/review-list/review-list",
     "pages/income/income",
-    "pages/profile/profile"
+    "pages/profile/profile",
+    "pages/edit-profile/edit-profile"
   ],
   "tabBar": {
     "color": "#999999",

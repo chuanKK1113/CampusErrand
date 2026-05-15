@@ -1,4 +1,5 @@
 // 个人中心页面
+const { auth } = require('../../utils/api')
 const app = getApp()
 
 Page({
@@ -7,16 +8,39 @@ Page({
     roleText: ''
   },
 
-  onShow() {
+  async onShow() {
     const userInfo = app.globalData.userInfo
     if (!userInfo) {
       wx.reLaunch({ url: '/pages/login/login' })
       return
     }
+    // 从服务器刷新最新用户信息
+    try {
+      const fresh = await auth.getProfile()
+      if (fresh) {
+        app.globalData.userInfo = fresh
+        wx.setStorageSync('userInfo', JSON.stringify(fresh))
+        this.setData({ userInfo: fresh })
+      } else {
+        this.setData({ userInfo })
+      }
+    } catch {
+      this.setData({ userInfo })
+    }
     this.setData({
-      userInfo,
-      roleText: userInfo.role === 'requester' ? '需求方' : userInfo.role === 'delivery' ? '配送员' : '管理员'
+      roleText: userInfo.role === 'requester' ? '需求方' : userInfo.role === 'delivery' ? '配送员' : '管理员',
+      avatarFullUrl: this.resolveAvatar(userInfo.avatar)
     })
+  },
+
+  resolveAvatar(avatar) {
+    if (!avatar) return ''
+    if (avatar.startsWith('http://') || avatar.startsWith('https://')) return avatar
+    return app.globalData.baseUrl + avatar
+  },
+
+  onEditProfile() {
+    wx.navigateTo({ url: '/pages/edit-profile/edit-profile' })
   },
 
   onIncome() {

@@ -1,0 +1,37 @@
+/* 头像区域 */
+.avatar-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40rpx 0 48rpx;
+  position: relative;
+}
+
+.avatar-image {
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: 50%;
+  background: #e8e8e8;
+  border: 4rpx solid #fff;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.1);
+}
+
+.avatar-overlay {
+  position: absolute;
+  bottom: 40rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.5);
+  padding: 8rpx 24rpx;
+  border-radius: 30rpx;
+}
+
+.avatar-change-text {
+  font-size: 24rpx;
+  color: #fff;
+}
+
+/* 禁用输入框样式 */
+.form-input[disabled] {
+  opacity: 0.6;
+}

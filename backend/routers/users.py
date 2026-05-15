@@ -1,9 +1,12 @@
 """用户相关路由"""
 
-from fastapi import APIRouter, HTTPException, Depends, Header
-from models import UserRegister, UserLogin, UserResponse, TokenResponse
+import os
+import uuid
+from fastapi import APIRouter, HTTPException, Depends, Header, UploadFile, File
+from models import UserRegister, UserLogin, UserResponse, TokenResponse, ProfileUpdate
 from database import Database
 from auth import create_access_token, verify_token
+from config import UPLOAD_DIR, BASE_DIR
 
 router = APIRouter(prefix="/api/auth", tags=["认证"])
 
@@ -69,6 +72,50 @@ def get_me(current_user: dict = Depends(get_current_user)):
     if not user:
         raise HTTPException(status_code=404, detail="用户不存在")
     return user
+
+
+@router.put("/profile")
+def update_profile(profile: ProfileUpdate, current_user: dict = Depends(get_current_user)):
+    """修改用户昵称"""
+    username = current_user.get("sub")
+    success = Database.update_profile(username, profile.name)
+    if not success:
+        raise HTTPException(status_code=400, detail="修改失败")
+    # 返回更新后的用户信息
+    user = Database.get_user(username)
+    return {"success": True, "message": "昵称修改成功", "user": user}
+
+
+@router.post("/avatar")
+async def upload_avatar(file: UploadFile = File(...), current_user: dict = Depends(get_current_user)):
+    """上传头像"""
+    username = current_user.get("sub")
+
+    # 验证文件类型
+    ext = os.path.splitext(file.filename)[1].lower()
+    if ext not in (".jpg", ".jpeg", ".png", ".gif", ".webp"):
+        raise HTTPException(status_code=400, detail="仅支持 JPG/PNG/GIF/WebP 格式")
+
+    # 生成唯一文件名
+    filename = f"{username}_{uuid.uuid4().hex[:8]}{ext}"
+    filepath = os.path.join(UPLOAD_DIR, filename)
+
+    # 保存文件
+    content = await file.read()
+    if len(content) > 2 * 1024 * 1024:
+        raise HTTPException(status_code=400, detail="文件大小不能超过 2MB")
+    with open(filepath, "wb") as f:
+        f.write(content)
+
+    # 头像访问 URL
+    avatar_url = f"/uploads/avatars/{filename}"
+
+    # 更新数据库
+    Database.update_avatar(username, avatar_url)
+
+    # 返回更新后的用户信息
+    user = Database.get_user(username)
+    return {"success": True, "message": "头像上传成功", "avatar": avatar_url, "user": user}
 
 
 # ==================== 用户管理（管理员） ====================

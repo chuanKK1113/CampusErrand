@@ -45,6 +45,9 @@ const auth = {
   },
   getProfile() {
     return request('GET', '/api/auth/me')
+  },
+  updateProfile(data) {
+    return request('PUT', '/api/auth/profile', data)
   }
 }
 
