@@ -1,0 +1,79 @@
+<view class="container">
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <block wx:else>
+    <!-- 状态卡片 -->
+    <view class="card status-card {{statusBgClass(order.status)}}">
+      <text class="status-card-text">{{order.status}}</text>
+      <text class="status-card-time">{{formatTime(order.created_at)}}</text>
+    </view>
+
+    <!-- 订单信息 -->
+    <view class="card">
+      <text class="section-title">订单信息</text>
+      <view class="info-row">
+        <text class="info-label">订单编号</text>
+        <text class="info-value">{{order.id}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">订单类型</text>
+        <text class="info-value">{{order.type}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">详细描述</text>
+        <text class="info-value">{{order.details}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">取件地点</text>
+        <text class="info-value">{{order.pickup}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">送达地点</text>
+        <text class="info-value">{{order.dropoff}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">配送费</text>
+        <text class="info-value info-price">¥{{order.reward}}</text>
+      </view>
+      <view wx:if="{{order.note}}" class="info-row">
+        <text class="info-label">备注</text>
+        <text class="info-value">{{order.note}}</text>
+      </view>
+    </view>
+
+    <!-- 配送信息 -->
+    <view wx:if="{{order.delivery_person}}" class="card">
+      <text class="section-title">配送信息</text>
+      <view class="info-row">
+        <text class="info-label">配送员</text>
+        <text class="info-value">{{order.delivery_person}}</text>
+      </view>
+      <view wx:if="{{order.accepted_at}}" class="info-row">
+        <text class="info-label">接单时间</text>
+        <text class="info-value">{{formatTime(order.accepted_at)}}</text>
+      </view>
+      <view wx:if="{{order.completed_at}}" class="info-row">
+        <text class="info-label">完成时间</text>
+        <text class="info-value">{{formatTime(order.completed_at)}}</text>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="card action-card">
+      <!-- 需求方：取消订单（待接单状态） -->
+      <button wx:if="{{order.status === '待接单' && userInfo.role === 'requester'}}" class="btn-danger" bindtap="onCancel">取消订单</button>
+
+      <!-- 配送员：确认送达（配送中状态） -->
+      <button wx:if="{{order.status === '配送中' && userInfo.role === 'delivery' && order.delivery_person === userInfo.username}}" class="btn-primary" bindtap="onComplete">确认送达</button>
+
+      <!-- 需求方：评价（已完成且未评价） -->
+      <button wx:if="{{order.status === '已完成' && userInfo.role === 'requester' && !reviewed}}" class="btn-outline" bindtap="onReview">评价配送员</button>
+
+      <!-- 配送员：接单 -->
+      <button wx:if="{{order.status === '待接单' && userInfo.role === 'delivery'}}" class="btn-primary" bindtap="onAccept">接单</button>
+    </view>
+  </block>
+</view>

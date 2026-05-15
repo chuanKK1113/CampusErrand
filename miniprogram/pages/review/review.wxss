@@ -1,0 +1,45 @@
+/* 评价 */
+.review-delivery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40rpx 0;
+  margin-bottom: 32rpx;
+}
+
+.review-avatar {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: #4A90D9;
+  color: #fff;
+  font-size: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16rpx;
+}
+
+.review-name {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+/* 星星 */
+.star-row {
+  display: flex;
+  justify-content: center;
+  padding: 16rpx 0;
+}
+
+.star {
+  font-size: 80rpx;
+  color: #ddd;
+  margin: 0 12rpx;
+  transition: color 0.2s;
+}
+
+.star-active {
+  color: #f5a623;
+}

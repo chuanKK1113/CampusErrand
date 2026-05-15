@@ -1,0 +1,39 @@
+<view class="container">
+  <!-- 角色标题 -->
+  <text class="page-title">{{pageTitle}}</text>
+
+  <!-- 筛选标签 -->
+  <scroll-view class="filter-tabs" scroll-x="true" show-scrollbar="false">
+    <view class="tab-item {{activeFilter === 'all' ? 'tab-active' : ''}}" bindtap="onFilter" data-filter="all">全部</view>
+    <view wx:for="{{filters}}" wx:key="index">
+      <view class="tab-item {{activeFilter === item.value ? 'tab-active' : ''}}" bindtap="onFilter" data-filter="{{item.value}}">{{item.label}}</view>
+    </view>
+  </scroll-view>
+
+  <!-- 订单列表 -->
+  <block wx:if="{{orderList.length > 0}}">
+    <view class="order-item" wx:for="{{orderList}}" wx:key="id" bindtap="onOrderTap" data-id="{{item.id}}">
+      <view class="order-item-header">
+        <text class="order-item-type">{{item.type}}</text>
+        <text class="list-item-status {{statusClass(item.status)}}">{{item.status}}</text>
+      </view>
+      <text class="order-item-desc">{{item.details}}</text>
+      <view class="order-item-location">
+        <text>📍 {{item.pickup}} → {{item.dropoff}}</text>
+      </view>
+      <view class="order-item-footer">
+        <text class="order-item-price">¥{{item.reward}}</text>
+        <text class="order-item-time">{{formatTime(item.created_at)}}</text>
+      </view>
+      <!-- 配送员信息 -->
+      <view wx:if="{{item.delivery_person}}" class="order-item-delivery">
+        <text>配送员：{{item.delivery_person}}</text>
+      </view>
+    </view>
+  </block>
+
+  <!-- 空状态 -->
+  <view wx:else class="empty-state">
+    <text>暂无订单</text>
+  </view>
+</view>

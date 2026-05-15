@@ -1,0 +1,56 @@
+<view class="container">
+  <!-- 用户信息卡片 -->
+  <view class="card profile-header">
+    <view class="profile-avatar">{{userInfo.name ? userInfo.name[0] : '?'}}</view>
+    <text class="profile-name">{{userInfo.name || '未知用户'}}</text>
+    <text class="profile-role-badge">{{roleText}}</text>
+  </view>
+
+  <!-- 详细信息 -->
+  <view class="card">
+    <text class="section-title">账户信息</text>
+    <view class="info-row">
+      <text class="info-label">用户名</text>
+      <text class="info-value">{{userInfo.username}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">姓名</text>
+      <text class="info-value">{{userInfo.name}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">手机号</text>
+      <text class="info-value">{{userInfo.phone}}</text>
+    </view>
+    <view wx:if="{{userInfo.student_id}}" class="info-row">
+      <text class="info-label">学号</text>
+      <text class="info-value">{{userInfo.student_id}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">角色</text>
+      <text class="info-value">{{roleText}}</text>
+    </view>
+    <view wx:if="{{userInfo.role === 'delivery'}}" class="info-row">
+      <text class="info-label">评分</text>
+      <text class="info-value">{{userInfo.rating || '暂无'}} / 5.0</text>
+    </view>
+    <view wx:if="{{userInfo.role === 'delivery'}}" class="info-row">
+      <text class="info-label">完成订单</text>
+      <text class="info-value">{{userInfo.completed || 0}} 单</text>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="card">
+    <view class="menu-item" bindtap="onIncome" wx:if="{{userInfo.role === 'delivery'}}">
+      <text>💰 收入统计</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="onReviews">
+      <text>⭐ 我的评价</text>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 退出登录 -->
+  <button class="btn-danger" bindtap="onLogout">退出登录</button>
+</view>

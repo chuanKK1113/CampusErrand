@@ -1,0 +1,89 @@
+/* 筛选标签 */
+.filter-tabs {
+  display: flex;
+  white-space: nowrap;
+  margin-bottom: 24rpx;
+  padding: 8rpx 0;
+}
+
+.tab-item {
+  display: inline-block;
+  padding: 12rpx 32rpx;
+  margin-right: 16rpx;
+  background: #fff;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  color: #666;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
+}
+
+.tab-active {
+  background: #4A90D9;
+  color: #fff;
+}
+
+/* 订单项 */
+.order-item {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 28rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
+}
+
+.order-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12rpx;
+}
+
+.order-item-type {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.order-item-desc {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 12rpx;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.order-item-location {
+  font-size: 26rpx;
+  color: #888;
+  margin-bottom: 12rpx;
+}
+
+.order-item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12rpx;
+  border-top: 2rpx solid #f0f0f0;
+}
+
+.order-item-price {
+  font-size: 36rpx;
+  color: #e74c3c;
+  font-weight: 700;
+}
+
+.order-item-time {
+  font-size: 24rpx;
+  color: #bbb;
+}
+
+.order-item-delivery {
+  margin-top: 12rpx;
+  padding-top: 12rpx;
+  border-top: 2rpx solid #f0f0f0;
+  font-size: 24rpx;
+  color: #999;
+}

@@ -1,0 +1,25 @@
+<view class="login-page">
+  <view class="login-header">
+    <view class="login-logo">🏃</view>
+    <text class="login-title">校园跑腿系统</text>
+    <text class="login-subtitle">方便快捷的校园互助平台</text>
+  </view>
+
+  <view class="card login-form">
+    <view class="form-group">
+      <text class="form-label">用户名</text>
+      <input class="form-input" placeholder="请输入用户名" value="{{username}}" bindinput="onUsernameInput" />
+    </view>
+    <view class="form-group">
+      <text class="form-label">密码</text>
+      <input class="form-input" type="password" placeholder="请输入密码" value="{{password}}" bindinput="onPasswordInput" />
+    </view>
+
+    <button class="btn-primary" bindtap="onLogin" loading="{{loading}}">登 录</button>
+    <button class="btn-outline" bindtap="onRegister">注册账号</button>
+  </view>
+
+  <view class="login-footer">
+    <text class="login-footer-text">测试账号：admin / 123456</text>
+  </view>
+</view>

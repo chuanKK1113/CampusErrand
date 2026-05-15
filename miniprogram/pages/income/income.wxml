@@ -1,0 +1,42 @@
+<view class="container">
+  <text class="page-title">收入统计</text>
+
+  <view class="card income-summary">
+    <view class="income-item">
+      <text class="income-value">{{stats.completed_count}}</text>
+      <text class="income-label">已完成订单</text>
+    </view>
+    <view class="income-divider"></view>
+    <view class="income-item">
+      <text class="income-value income-money">¥{{stats.total_income}}</text>
+      <text class="income-label">总收入</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <text class="section-title">个人表现</text>
+    <view class="info-row">
+      <text class="info-label">平均评分</text>
+      <text class="info-value">{{userInfo.rating || '暂无'}} / 5.0</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">总完成数</text>
+      <text class="info-value">{{userInfo.completed || 0}} 单</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <text class="section-title">已完成订单明细</text>
+    <block wx:if="{{completedOrders.length > 0}}">
+      <view class="order-mini-item" wx:for="{{completedOrders}}" wx:key="id" bindtap="onOrderDetail" data-id="{{item.id}}">
+        <view class="order-mini-top">
+          <text class="order-mini-type">{{item.type}}</text>
+          <text class="order-mini-price">¥{{item.reward}}</text>
+        </view>
+        <text class="order-mini-desc">{{item.details}}</text>
+        <text class="order-mini-time">{{formatTime(item.completed_at)}}</text>
+      </view>
+    </block>
+    <view wx:else class="empty-text">暂无完成订单</view>
+  </view>
+</view>

@@ -1,0 +1,28 @@
+<view class="container">
+  <text class="page-title">评价配送员</text>
+
+  <view class="card">
+    <view class="review-delivery">
+      <view class="review-avatar">{{deliveryName ? deliveryName[0] : '?'}}</view>
+      <text class="review-name">{{deliveryName}}</text>
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">评分</text>
+      <view class="star-row">
+        <view class="star {{rating >= 1 ? 'star-active' : ''}}" bindtap="setRating" data-rating="1">★</view>
+        <view class="star {{rating >= 2 ? 'star-active' : ''}}" bindtap="setRating" data-rating="2">★</view>
+        <view class="star {{rating >= 3 ? 'star-active' : ''}}" bindtap="setRating" data-rating="3">★</view>
+        <view class="star {{rating >= 4 ? 'star-active' : ''}}" bindtap="setRating" data-rating="4">★</view>
+        <view class="star {{rating >= 5 ? 'star-active' : ''}}" bindtap="setRating" data-rating="5">★</view>
+      </view>
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">评价内容（可选）</text>
+      <textarea class="form-textarea" placeholder="请写下你的评价..." value="{{comment}}" bindinput="onCommentInput" />
+    </view>
+
+    <button class="btn-primary" bindtap="onSubmit" loading="{{loading}}">提交评价</button>
+  </view>
+</view>
