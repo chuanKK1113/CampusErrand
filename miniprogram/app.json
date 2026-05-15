@@ -7,6 +7,7 @@
     "pages/order-list/order-list",
     "pages/order-detail/order-detail",
     "pages/review/review",
+    "pages/review-list/review-list",
     "pages/income/income",
     "pages/profile/profile"
   ],

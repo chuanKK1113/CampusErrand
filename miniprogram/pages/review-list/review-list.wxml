@@ -1,0 +1,25 @@
+<view class="container">
+  <text class="page-title">我的评价</text>
+
+  <block wx:if="{{reviews.length > 0}}">
+    <view class="review-item" wx:for="{{reviews}}" wx:key="order_id">
+      <view class="review-header">
+        <view class="review-order-info">
+          <text class="review-order-id">订单 {{item.order_id}}</text>
+          <text class="review-delivery">配送员：{{item.delivery_person}}</text>
+        </view>
+        <view class="review-stars">
+          <text wx:for="{{[1,2,3,4,5]}}" wx:key="index" class="star {{index < item.rating ? 'star-on' : 'star-off'}}">★</text>
+        </view>
+      </view>
+      <text wx:if="{{item.comment}}" class="review-comment">{{item.comment}}</text>
+      <view class="review-footer">
+        <text class="review-rating-text">{{item.rating}}/5 分</text>
+      </view>
+    </view>
+  </block>
+
+  <view wx:else class="empty-state">
+    <text>暂无评价</text>
+  </view>
+</view>

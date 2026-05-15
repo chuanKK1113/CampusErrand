@@ -37,22 +37,18 @@ Page({
         const orders_data = await orders.getMyOrders()
         this.setData({ recentOrders: (orders_data || []).slice(0, 5) })
       } else if (userInfo.role === 'delivery') {
+        // 获取配送中的订单
         const deliveries = await orders.getMyDeliveries('配送中')
         this.setData({ activeDeliveries: deliveries || [] })
-        // 获取收入统计
-        try {
-          const { formatPrice } = require('../../utils/util')
-          const res = await wx.request({
-            url: app.globalData.baseUrl + `/api/orders/delivery`,
-            header: { Authorization: `Bearer ${app.globalData.token}` },
-          })
-          if (res.data) {
-            const all_deliveries = res.data || []
-            const completed = all_deliveries.filter(o => o.status === '已完成')
-            const total = completed.reduce((sum, o) => sum + parseFloat(o.reward || 0), 0)
-            this.setData({ stats: { completed_count: completed.length, total_income: total } })
+        // 获取已完成订单计算收入统计
+        const completedList = await orders.getMyDeliveries('已完成')
+        const totalIncome = (completedList || []).reduce((sum, o) => sum + parseFloat(o.reward || 0), 0)
+        this.setData({
+          stats: {
+            completed_count: (completedList || []).length,
+            total_income: totalIncome
           }
-        } catch(e) {}
+        })
       }
     } catch (err) {
       console.error('加载首页数据失败', err)
@@ -70,7 +66,7 @@ Page({
   },
 
   onMyReviews() {
-    // TODO: 跳转到评价列表
+    wx.navigateTo({ url: '/pages/review-list/review-list' })
   },
 
   onBrowseOrders() {

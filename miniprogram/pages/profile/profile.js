@@ -24,7 +24,7 @@ Page({
   },
 
   onReviews() {
-    wx.showToast({ title: '功能开发中', icon: 'none' })
+    wx.navigateTo({ url: '/pages/review-list/review-list' })
   },
 
   onLogout() {
